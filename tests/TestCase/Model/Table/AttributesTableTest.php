@@ -28,8 +28,8 @@ class AttributesTableTest extends TestCase
         'app.attribute_types',
         'app.quizzes',
         'app.users',
-        'app.data',
         'app.shared_users',
+        'app.data',
         'app.data_attributes'
     ];
 

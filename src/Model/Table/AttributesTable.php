@@ -27,7 +27,7 @@ class AttributesTable extends Table
         parent::initialize($config);
 
         $this->table('attributes');
-        $this->displayField('id');
+        $this->displayField('value');
         $this->primaryKey('id');
 
         $this->belongsTo('AttributeTypes', [

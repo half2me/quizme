@@ -20,9 +20,9 @@ class AttributesControllerTest extends IntegrationTestCase
         'app.attribute_types',
         'app.quizzes',
         'app.users',
+        'app.shared_users',
         'app.data',
-        'app.data_attributes',
-        'app.shared_users'
+        'app.data_attributes'
     ];
 
     /**

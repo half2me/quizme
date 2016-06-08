@@ -29,7 +29,7 @@ class QuizzesTable extends Table
         parent::initialize($config);
 
         $this->table('quizzes');
-        $this->displayField('id');
+        $this->displayField('name');
         $this->primaryKey('id');
 
         $this->belongsTo('Users', [
