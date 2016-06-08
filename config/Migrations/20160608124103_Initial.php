@@ -101,7 +101,7 @@ class Initial extends AbstractMigration
             )
             ->create();
 
-        $this->table('quizes', ['id' => false, 'primary_key' => ['id']])
+        $this->table('quizzes', ['id' => false, 'primary_key' => ['id']])
             ->addColumn('id', 'biginteger', [
                 'autoIncrement' => true,
                 'default' => null,
@@ -170,7 +170,7 @@ class Initial extends AbstractMigration
         $this->table('attribute_types')
             ->addForeignKey(
                 'quiz_id',
-                'quizes',
+                'quizzes',
                 'id',
                 [
                     'update' => 'CASCADE',
@@ -194,7 +194,7 @@ class Initial extends AbstractMigration
         $this->table('data')
             ->addForeignKey(
                 'quiz_id',
-                'quizes',
+                'quizzes',
                 'id',
                 [
                     'update' => 'CASCADE',
@@ -224,7 +224,7 @@ class Initial extends AbstractMigration
             )
             ->update();
 
-        $this->table('quizes')
+        $this->table('quizzes')
             ->addForeignKey(
                 'user_id',
                 'users',
@@ -239,7 +239,7 @@ class Initial extends AbstractMigration
         $this->table('shared_users')
             ->addForeignKey(
                 'quiz_id',
-                'quizes',
+                'quizzes',
                 'id',
                 [
                     'update' => 'CASCADE',
@@ -283,7 +283,7 @@ class Initial extends AbstractMigration
                 'data_id'
             );
 
-        $this->table('quizes')
+        $this->table('quizzes')
             ->dropForeignKey(
                 'user_id'
             );
@@ -300,7 +300,7 @@ class Initial extends AbstractMigration
         $this->dropTable('attributes');
         $this->dropTable('data');
         $this->dropTable('data_attributes');
-        $this->dropTable('quizes');
+        $this->dropTable('quizzes');
         $this->dropTable('shared_users');
         $this->dropTable('users');
     }
