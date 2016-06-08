@@ -58,6 +58,10 @@ class QuizzesTable extends Table
         $validator
             ->allowEmpty('id', 'create');
 
+        $validator
+            ->requirePresence('name', 'create')
+            ->notEmpty('name');
+
         return $validator;
     }
 

@@ -23,6 +23,10 @@
             <td><?= $quiz->has('user') ? $this->Html->link($quiz->user->name, ['controller' => 'Users', 'action' => 'view', $quiz->user->id]) : '' ?></td>
         </tr>
         <tr>
+            <th><?= __('Name') ?></th>
+            <td><?= h($quiz->name) ?></td>
+        </tr>
+        <tr>
             <th><?= __('Id') ?></th>
             <td><?= $this->Number->format($quiz->id) ?></td>
         </tr>

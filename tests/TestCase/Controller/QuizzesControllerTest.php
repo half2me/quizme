@@ -18,9 +18,11 @@ class QuizzesControllerTest extends IntegrationTestCase
     public $fixtures = [
         'app.quizzes',
         'app.users',
+        'app.shared_users',
         'app.attribute_types',
+        'app.attributes',
         'app.data',
-        'app.shared_users'
+        'app.data_attributes'
     ];
 
     /**

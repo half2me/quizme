@@ -24,6 +24,7 @@
         <legend><?= __('Edit Quiz') ?></legend>
         <?php
             echo $this->Form->input('user_id', ['options' => $users]);
+            echo $this->Form->input('name');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

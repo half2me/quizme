@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $user_id
  * @property \App\Model\Entity\User $user
+ * @property string $name
  * @property \App\Model\Entity\AttributeType[] $attribute_types
  * @property \App\Model\Entity\Data[] $data
  * @property \App\Model\Entity\SharedUser[] $shared_users
