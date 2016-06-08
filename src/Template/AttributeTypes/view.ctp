@@ -28,7 +28,7 @@
         </tr>
         <tr>
             <th><?= __('Cardinality') ?></th>
-            <td><?= $this->Number->format($attributeType->cardinality) ?></td>
+            <td><?= $attributeType->cardinality ? __('Yes') : __('No'); ?></td>
         </tr>
     </table>
     <div class="related">

@@ -8,7 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $name
- * @property int $cardinality
+ * @property bool $cardinality
  * @property int $quiz_id
  * @property \App\Model\Entity\Quiz $quiz
  * @property \App\Model\Entity\Attribute[] $attributes

@@ -55,7 +55,7 @@ class AttributeTypesTable extends Table
             ->notEmpty('name');
 
         $validator
-            ->integer('cardinality')
+            ->boolean('cardinality')
             ->requirePresence('cardinality', 'create')
             ->notEmpty('cardinality');
 
