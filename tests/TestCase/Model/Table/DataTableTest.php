@@ -27,10 +27,10 @@ class DataTableTest extends TestCase
         'app.data',
         'app.quizzes',
         'app.users',
+        'app.shared_users',
         'app.attribute_types',
         'app.attributes',
-        'app.data_attributes',
-        'app.shared_users'
+        'app.data_attributes'
     ];
 
     /**

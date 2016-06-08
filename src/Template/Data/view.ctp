@@ -16,7 +16,7 @@
     <table class="vertical-table">
         <tr>
             <th><?= __('Quiz') ?></th>
-            <td><?= $data->has('quiz') ? $this->Html->link($data->quiz->id, ['controller' => 'Quizzes', 'action' => 'view', $data->quiz->id]) : '' ?></td>
+            <td><?= $data->has('quiz') ? $this->Html->link($data->quiz->name, ['controller' => 'Quizzes', 'action' => 'view', $data->quiz->id]) : '' ?></td>
         </tr>
         <tr>
             <th><?= __('Id') ?></th>

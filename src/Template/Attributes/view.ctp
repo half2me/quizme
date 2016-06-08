@@ -12,7 +12,7 @@
     </ul>
 </nav>
 <div class="attributes view large-9 medium-8 columns content">
-    <h3><?= h($attribute->id) ?></h3>
+    <h3><?= h($attribute->value) ?></h3>
     <table class="vertical-table">
         <tr>
             <th><?= __('Attribute Type') ?></th>
