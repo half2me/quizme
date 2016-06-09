@@ -45,7 +45,7 @@ use Cake\Utility\Hash;
             <?php foreach ($quiz->data as $data): ?>
             <tr>
                 <td><?= h($data->id) ?></td>
-                <td>Name</td>
+                <td><?= h($data->name) ?></td>
                 <?php
                 foreach ($quiz->attribute_types as $attributeType) {
                     $att = implode(', ', Hash::extract($data->attributes, "{n}[attribute_type_id={$attributeType->id}].value"));

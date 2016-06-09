@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Collection\Collection;
 
 /**
  * Quizzes Controller
@@ -111,5 +112,63 @@ class QuizzesController extends AppController
             $this->Flash->error(__('The quiz could not be deleted. Please, try again.'));
         }
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * Start method
+     *
+     * @param string|null $id Quiz id.
+     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function start($id = null)
+    {
+        $quiz = $this->Quizzes->get($id, [
+            'contain' => []
+        ]);
+        $this->set('quiz', $quiz);
+        $this->set('_serialize', ['quiz']);
+    }
+
+    /**
+     * Start method
+     *
+     * @param string|null $id Quiz id.
+     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function askRandomQuestion($id = null)
+    {
+        // Quiz type 1 ask about attributes for data
+
+        // Select random data
+        $data = $this->Quizzes->Data->find()
+            ->select('Data.id')
+            ->where(['Data.quiz_id' => $id])
+            ->all()
+            ->sample(1)
+            ->first();
+
+        // Grab info
+        $data = $this->Quizzes->Data->get($data->id, [
+            'contain' => ['Attributes', 'Attributes.AttributeTypes']
+        ]);
+
+        // Select random attribute
+        $attribute = (new Collection($data->attributes))->sample(1)->first();
+
+        // Select similar attributes
+        $otherAttributes = $data = $this->Quizzes->AttributeTypes->Attributes->find()
+            ->where(['attribute_type_id' => $attribute->attribute_type_id])
+            ->where(['id IS NOT' => $attribute->id])
+            ->all()
+            ->sample(3);
+
+        $attributeList = $otherAttributes;
+
+        $this->set('data', $data);
+        $this->set('correctAttribute', $attribute);
+        $this->set('attributes', $attributeList);
+        $this->set('_serialize', ['quiz']);
     }
 }
