@@ -38,12 +38,14 @@
             <tr>
                 <th><?= __('Id') ?></th>
                 <th><?= __('User Id') ?></th>
+                <th><?= __('Name') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($user->quizzes as $quizzes): ?>
             <tr>
                 <td><?= h($quizzes->id) ?></td>
                 <td><?= h($quizzes->user_id) ?></td>
+                <td><?= h($quizzes->name) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Quizzes', 'action' => 'view', $quizzes->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['controller' => 'Quizzes', 'action' => 'edit', $quizzes->id]) ?>

@@ -23,6 +23,8 @@ class UsersFixture extends TestFixture
         'password' => ['type' => 'string', 'length' => 50, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
+            'name' => ['type' => 'unique', 'columns' => ['name'], 'length' => []],
+            'email' => ['type' => 'unique', 'columns' => ['email'], 'length' => []],
         ],
         '_options' => [
             'engine' => 'InnoDB',
