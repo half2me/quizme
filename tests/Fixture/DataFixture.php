@@ -19,6 +19,7 @@ class DataFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'biginteger', 'length' => 20, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'quiz_id' => ['type' => 'biginteger', 'length' => 20, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'name' => ['type' => 'string', 'length' => 50, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'fixed' => null],
         '_indexes' => [
             'quiz_id' => ['type' => 'index', 'columns' => ['quiz_id'], 'length' => []],
         ],
@@ -41,7 +42,8 @@ class DataFixture extends TestFixture
     public $records = [
         [
             'id' => 1,
-            'quiz_id' => 1
+            'quiz_id' => 1,
+            'name' => 'Lorem ipsum dolor sit amet'
         ],
     ];
 }

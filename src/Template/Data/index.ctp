@@ -15,6 +15,7 @@
             <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
                 <th><?= $this->Paginator->sort('quiz_id') ?></th>
+                <th><?= $this->Paginator->sort('name') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -23,6 +24,7 @@
             <tr>
                 <td><?= $this->Number->format($data->id) ?></td>
                 <td><?= $data->has('quiz') ? $this->Html->link($data->quiz->name, ['controller' => 'Quizzes', 'action' => 'view', $data->quiz->id]) : '' ?></td>
+                <td><?= h($data->name) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $data->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $data->id]) ?>

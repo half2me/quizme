@@ -14,6 +14,7 @@
         <legend><?= __('Add Data') ?></legend>
         <?php
             echo $this->Form->input('quiz_id', ['options' => $quizzes]);
+            echo $this->Form->input('name');
             echo $this->Form->input('attributes._ids', ['options' => $attributes]);
         ?>
     </fieldset>

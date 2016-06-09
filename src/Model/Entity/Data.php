@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $quiz_id
  * @property \App\Model\Entity\Quiz $quiz
+ * @property string $name
  * @property \App\Model\Entity\Attribute[] $attributes
  */
 class Data extends Entity

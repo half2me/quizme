@@ -19,6 +19,10 @@
             <td><?= $data->has('quiz') ? $this->Html->link($data->quiz->name, ['controller' => 'Quizzes', 'action' => 'view', $data->quiz->id]) : '' ?></td>
         </tr>
         <tr>
+            <th><?= __('Name') ?></th>
+            <td><?= h($data->name) ?></td>
+        </tr>
+        <tr>
             <th><?= __('Id') ?></th>
             <td><?= $this->Number->format($data->id) ?></td>
         </tr>
