@@ -146,6 +146,7 @@ class QuizzesController extends AppController
             ->select('Data.id')
             ->where(['Data.quiz_id' => $id])
             ->all()
+            ->shuffle()
             ->sample(1)
             ->first();
 
@@ -155,20 +156,21 @@ class QuizzesController extends AppController
         ]);
 
         // Select random attribute
-        $attribute = (new Collection($data->attributes))->sample(1)->first();
+        $attributeCollection = (new Collection($data->attributes))->sample(1);
+        $attribute = $attributeCollection->first();
 
         // Select similar attributes
-        $otherAttributes = $data = $this->Quizzes->AttributeTypes->Attributes->find()
+        $otherAttributes = $this->Quizzes->AttributeTypes->Attributes->find()
             ->where(['attribute_type_id' => $attribute->attribute_type_id])
             ->where(['id IS NOT' => $attribute->id])
             ->all()
-            ->sample(3);
-
-        $attributeList = $otherAttributes;
+            ->shuffle()
+            ->sample(3)
+            ->append($attributeCollection->toList());
 
         $this->set('data', $data);
         $this->set('correctAttribute', $attribute);
-        $this->set('attributes', $attributeList);
+        $this->set('attributes', $otherAttributes);
         $this->set('_serialize', ['quiz']);
     }
 }
