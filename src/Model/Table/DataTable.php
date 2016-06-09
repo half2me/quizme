@@ -27,7 +27,7 @@ class DataTable extends Table
         parent::initialize($config);
 
         $this->table('data');
-        $this->displayField('id');
+        $this->displayField('name');
         $this->primaryKey('id');
 
         $this->belongsTo('Quizzes', [

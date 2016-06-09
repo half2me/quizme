@@ -23,10 +23,6 @@
             <td><?= $this->Number->format($attribute->id) ?></td>
         </tr>
     </table>
-    <div class="row">
-        <h4><?= __('Value') ?></h4>
-        <?= $this->Text->autoParagraph(h($attribute->value)); ?>
-    </div>
     <div class="related">
         <h4><?= __('Related Data') ?></h4>
         <?php if (!empty($attribute->data)): ?>
