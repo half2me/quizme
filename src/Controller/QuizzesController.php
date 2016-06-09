@@ -37,7 +37,9 @@ class QuizzesController extends AppController
     public function view($id = null)
     {
         $quiz = $this->Quizzes->get($id, [
-            'contain' => ['Users', 'AttributeTypes', 'Data', 'SharedUsers']
+            'contain' => ['Users', 'AttributeTypes', 'SharedUsers', 'Data' => function ($q) {
+                return $q->contain(['Attributes']);
+            }]
         ]);
 
         $this->set('quiz', $quiz);

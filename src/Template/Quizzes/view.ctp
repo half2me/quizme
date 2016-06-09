@@ -1,4 +1,8 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
+<?php
+use Cake\Utility\Hash;
+?>
+
+    <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('Edit Quiz'), ['action' => 'edit', $quiz->id]) ?> </li>
@@ -19,89 +23,38 @@
     <h3><?= h($quiz->id) ?></h3>
     <table class="vertical-table">
         <tr>
-            <th><?= __('User') ?></th>
+            <th><?= __('Owner') ?></th>
             <td><?= $quiz->has('user') ? $this->Html->link($quiz->user->name, ['controller' => 'Users', 'action' => 'view', $quiz->user->id]) : '' ?></td>
         </tr>
         <tr>
             <th><?= __('Name') ?></th>
             <td><?= h($quiz->name) ?></td>
         </tr>
-        <tr>
-            <th><?= __('Id') ?></th>
-            <td><?= $this->Number->format($quiz->id) ?></td>
-        </tr>
     </table>
     <div class="related">
-        <h4><?= __('Related Attribute Types') ?></h4>
-        <?php if (!empty($quiz->attribute_types)): ?>
+        <h4><?= __('Quiz Data') ?></h4>
         <table cellpadding="0" cellspacing="0">
             <tr>
-                <th><?= __('Id') ?></th>
-                <th><?= __('Name') ?></th>
-                <th><?= __('Cardinality') ?></th>
-                <th><?= __('Quiz Id') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
+                <td>Id</td>
+                <td>Name</td>
+                <?php foreach ($quiz->attribute_types as $attributeType): ?>
+                    <td><?= h($attributeType->name) ?></td>
+                <?php endforeach; ?>
             </tr>
-            <?php foreach ($quiz->attribute_types as $attributeTypes): ?>
-            <tr>
-                <td><?= h($attributeTypes->id) ?></td>
-                <td><?= h($attributeTypes->name) ?></td>
-                <td><?= h($attributeTypes->cardinality) ?></td>
-                <td><?= h($attributeTypes->quiz_id) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'AttributeTypes', 'action' => 'view', $attributeTypes->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'AttributeTypes', 'action' => 'edit', $attributeTypes->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'AttributeTypes', 'action' => 'delete', $attributeTypes->id], ['confirm' => __('Are you sure you want to delete # {0}?', $attributeTypes->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
-    <div class="related">
-        <h4><?= __('Related Data') ?></h4>
-        <?php if (!empty($quiz->data)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th><?= __('Id') ?></th>
-                <th><?= __('Quiz Id') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
+            <?php if (!empty($quiz->data)): ?>
             <?php foreach ($quiz->data as $data): ?>
             <tr>
                 <td><?= h($data->id) ?></td>
-                <td><?= h($data->quiz_id) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Data', 'action' => 'view', $data->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Data', 'action' => 'edit', $data->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Data', 'action' => 'delete', $data->id], ['confirm' => __('Are you sure you want to delete # {0}?', $data->id)]) ?>
-                </td>
+                <td>Name</td>
+                <?php
+                foreach ($quiz->attribute_types as $attributeType) {
+                    $att = implode(', ', Hash::extract($data->attributes, "{n}[attribute_type_id={$attributeType->id}].value"));
+                    echo "<td>$att</td>";
+                }
+                ?>
             </tr>
             <?php endforeach; ?>
+            <?php endif; ?>
         </table>
-        <?php endif; ?>
-    </div>
-    <div class="related">
-        <h4><?= __('Related Shared Users') ?></h4>
-        <?php if (!empty($quiz->shared_users)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th><?= __('Quiz Id') ?></th>
-                <th><?= __('User Id') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($quiz->shared_users as $sharedUsers): ?>
-            <tr>
-                <td><?= h($sharedUsers->quiz_id) ?></td>
-                <td><?= h($sharedUsers->user_id) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'SharedUsers', 'action' => 'view', $sharedUsers->quiz_id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'SharedUsers', 'action' => 'edit', $sharedUsers->quiz_id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'SharedUsers', 'action' => 'delete', $sharedUsers->quiz_id], ['confirm' => __('Are you sure you want to delete # {0}?', $sharedUsers->quiz_id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
     </div>
 </div>
