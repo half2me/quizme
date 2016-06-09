@@ -14,6 +14,7 @@
         <thead>
             <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
+                <th><?= $this->Paginator->sort('value') ?></th>
                 <th><?= $this->Paginator->sort('attribute_type_id') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
@@ -22,6 +23,7 @@
             <?php foreach ($attributes as $attribute): ?>
             <tr>
                 <td><?= $this->Number->format($attribute->id) ?></td>
+                <td><?= h($attribute->value) ?></td>
                 <td><?= $attribute->has('attribute_type') ? $this->Html->link($attribute->attribute_type->name, ['controller' => 'AttributeTypes', 'action' => 'view', $attribute->attribute_type->id]) : '' ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $attribute->id]) ?>

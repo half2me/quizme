@@ -5,6 +5,7 @@ use App\Model\Entity\Quiz;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
 /**
@@ -76,5 +77,20 @@ class QuizzesTable extends Table
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         return $rules;
+    }
+
+    public function import($file) {
+        $data = [[]];
+
+        // Parse attributes
+        $attributes = Hash::extract($data, '0.{n}');
+
+
+
+        foreach ($data as $row) {
+            foreach ($row as $cell) {
+
+            }
+        }
     }
 }
