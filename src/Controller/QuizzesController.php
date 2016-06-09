@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Collection\Collection;
+use Cake\Utility\Hash;
 
 /**
  * Quizzes Controller
@@ -155,14 +156,16 @@ class QuizzesController extends AppController
             'contain' => ['Attributes', 'Attributes.AttributeTypes']
         ]);
 
+        $goodAtts = Hash::extract($data->attributes, '{n}.id');
+
         // Select random attribute
         $attributeCollection = (new Collection($data->attributes))->sample(1);
         $attribute = $attributeCollection->first();
 
-        // Select similar attributes
+        // Select similar bad attributes
         $otherAttributes = $this->Quizzes->AttributeTypes->Attributes->find()
             ->where(['attribute_type_id' => $attribute->attribute_type_id])
-            ->where(['id IS NOT' => $attribute->id])
+            ->where(['id NOT IN' => $goodAtts])
             ->all()
             ->shuffle()
             ->sample(3)
