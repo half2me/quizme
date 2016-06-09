@@ -169,8 +169,10 @@ class QuizzesController extends AppController
             ->all()
             ->shuffle()
             ->sample(3)
-            ->append($attributeCollection->toList())
-            ->shuffle();
+            ->append($attributeCollection);
+
+        $otherAttributes = new Collection($otherAttributes->toList());
+        $otherAttributes = $otherAttributes->shuffle();
 
         $this->set('data', $data);
         $this->set('correctAttribute', $attribute);
