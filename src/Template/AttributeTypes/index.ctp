@@ -26,7 +26,7 @@
                 <td><?= $this->Number->format($attributeType->id) ?></td>
                 <td><?= h($attributeType->name) ?></td>
                 <td><?= h($attributeType->cardinality) ?></td>
-                <td><?= $attributeType->has('quiz') ? $this->Html->link($attributeType->quiz->id, ['controller' => 'Quizzes', 'action' => 'view', $attributeType->quiz->id]) : '' ?></td>
+                <td><?= $attributeType->has('quiz') ? $this->Html->link($attributeType->quiz->name, ['controller' => 'Quizzes', 'action' => 'view', $attributeType->quiz->id]) : '' ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $attributeType->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $attributeType->id]) ?>

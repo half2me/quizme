@@ -26,6 +26,7 @@ class AttributeTypesFixture extends TestFixture
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
+            'quiz_id_2' => ['type' => 'unique', 'columns' => ['quiz_id', 'name'], 'length' => []],
             'attribute_types_ibfk_1' => ['type' => 'foreign', 'columns' => ['quiz_id'], 'references' => ['quizzes', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
         ],
         '_options' => [

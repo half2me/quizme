@@ -20,7 +20,7 @@
         </tr>
         <tr>
             <th><?= __('Quiz') ?></th>
-            <td><?= $attributeType->has('quiz') ? $this->Html->link($attributeType->quiz->id, ['controller' => 'Quizzes', 'action' => 'view', $attributeType->quiz->id]) : '' ?></td>
+            <td><?= $attributeType->has('quiz') ? $this->Html->link($attributeType->quiz->name, ['controller' => 'Quizzes', 'action' => 'view', $attributeType->quiz->id]) : '' ?></td>
         </tr>
         <tr>
             <th><?= __('Id') ?></th>
