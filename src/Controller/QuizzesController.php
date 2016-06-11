@@ -88,15 +88,21 @@ class QuizzesController extends AppController
                                         $this->Quizzes->AttributeTypes->link($quiz, [$attType]);
                                         $this->Quizzes->AttributeTypes->save($attType);
                                     }
-                                    $att = $this->Quizzes->Data->Attributes->findByValue($cell)->first();
-                                    if (!$att) {
-                                        // Create new attribute
-                                        $att = $this->Quizzes->Data->Attributes->newEntity();
-                                        $att->value = $cell;
-                                        $this->Quizzes->Data->Attributes->link($attType, [$att]);
+
+                                    // Process multiple attributes
+                                    $split = explode(', ', $cell);
+
+                                    foreach ($split as $a) {
+                                        $att = $this->Quizzes->Data->Attributes->findByValue($cell)->first();
+                                        if (!$att) {
+                                            // Create new attribute
+                                            $att = $this->Quizzes->Data->Attributes->newEntity();
+                                            $att->value = $cell;
+                                            $this->Quizzes->Data->Attributes->link($attType, [$att]);
+                                        }
+                                        $this->Quizzes->Data->Attributes->link($dataEntity, [$att]);
+                                        $this->Quizzes->Data->Attributes->save($att);
                                     }
-                                    $this->Quizzes->Data->Attributes->link($dataEntity, [$att]);
-                                    $this->Quizzes->Data->Attributes->save($att);
                                 }
                             }
                         }
