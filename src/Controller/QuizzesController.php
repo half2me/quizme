@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\Data;
 use Cake\Collection\Collection;
 use Cake\Utility\Hash;
 
@@ -58,7 +59,50 @@ class QuizzesController extends AppController
         $quiz = $this->Quizzes->newEntity();
         if ($this->request->is('post')) {
             $quiz = $this->Quizzes->patchEntity($quiz, $this->request->data);
+
             if ($this->Quizzes->save($quiz)) {
+
+                // If CSV is attached, parse and save
+                if (!empty($this->request->data['csv']['tmp_name'])) {
+                    $csv = array_map('str_getcsv', file($this->request->data['csv']['tmp_name']));
+                    //debug($csv);
+
+                    $dataEntity = null;
+
+                    foreach ($csv as $rowNum => $row) {
+                        foreach ($row as $columnNum => $cell) {
+                            if ($rowNum != 0) { // First row contains column names
+                                if ($columnNum == 0) {
+                                    // New data entity
+                                    $dataEntity = $this->Quizzes->Data->newEntity();
+                                    $dataEntity->name = $cell;
+                                    $this->Quizzes->Data->link($quiz, [$dataEntity]);
+                                    $this->Quizzes->Data->save($dataEntity);
+                                } else {
+                                    // attribute for last added data entity
+                                    $attType = $this->Quizzes->AttributeTypes->findByName($csv[0][$columnNum])->first();
+                                    if (!$attType) {
+                                        // Create new one
+                                        $attType = $this->Quizzes->AttributeTypes->newEntity();
+                                        $attType->name = $csv[0][$columnNum];
+                                        $this->Quizzes->AttributeTypes->link($quiz, [$attType]);
+                                        $this->Quizzes->AttributeTypes->save($attType);
+                                    }
+                                    $att = $this->Quizzes->Data->Attributes->findByValue($cell)->first();
+                                    if (!$att) {
+                                        // Create new attribute
+                                        $att = $this->Quizzes->Data->Attributes->newEntity();
+                                        $att->value = $cell;
+                                        $this->Quizzes->Data->Attributes->link($attType, [$att]);
+                                    }
+                                    $this->Quizzes->Data->Attributes->link($dataEntity, [$att]);
+                                    $this->Quizzes->Data->Attributes->save($att);
+                                }
+                            }
+                        }
+                    }
+                }
+
                 $this->Flash->success(__('The quiz has been saved.'));
                 return $this->redirect(['action' => 'index']);
             } else {

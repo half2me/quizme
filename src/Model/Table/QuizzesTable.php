@@ -80,11 +80,13 @@ class QuizzesTable extends Table
     }
 
     public function import($file) {
+        $csv = array_map('str_getcsv', file($file));
+        dump($csv);
+
         $data = [[]];
 
         // Parse attributes
         $attributes = Hash::extract($data, '0.{n}');
-
 
 
         foreach ($data as $row) {

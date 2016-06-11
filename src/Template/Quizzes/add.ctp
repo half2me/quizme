@@ -13,12 +13,13 @@
     </ul>
 </nav>
 <div class="quizzes form large-9 medium-8 columns content">
-    <?= $this->Form->create($quiz) ?>
+    <?= $this->Form->create($quiz, ['type' => 'file']) ?>
     <fieldset>
         <legend><?= __('Add Quiz') ?></legend>
         <?php
             echo $this->Form->input('user_id', ['options' => $users]);
             echo $this->Form->input('name');
+            echo '(Optional) Use data from CSV: ' . $this->Form->file('csv');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
