@@ -270,7 +270,9 @@ class QuizzesController extends AppController
         $otherData = $this->Quizzes->Data->find()
             ->where(['Data.quiz_id' => $id])
             ->where(['Data.id NOT IN' => $goodData])
-            ->matching('Attributes.AttributeTypes')
+            ->matching('Attributes', function ($q) use ($attribute) {
+                return $q->where(['Attributes.attribute_type_id' => $attribute->attribute_type_id]);
+            })
             ->all()
             ->shuffle()
             ->sample(3)
