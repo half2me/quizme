@@ -64,49 +64,54 @@ class QuizzesController extends AppController
 
                 // If CSV is attached, parse and save
                 if (!empty($this->request->data['csv']['tmp_name'])) {
-                    $csv = array_map('str_getcsv', file($this->request->data['csv']['tmp_name']));
-                    //debug($csv);
+                    $csv = [];
+                    foreach (file($this->request->data['csv']['tmp_name']) as $row) {
+                        $csv[] = str_getcsv($row, ";");
+                    }
 
                     $dataEntity = null;
 
                     foreach ($csv as $rowNum => $row) {
                         foreach ($row as $columnNum => $cell) {
                             if ($rowNum != 0) { // First row contains column names
-                                if ($columnNum == 0) {
-                                    // New data entity
-                                    $dataEntity = $this->Quizzes->Data->newEntity();
-                                    $dataEntity->name = $cell;
-                                    $this->Quizzes->Data->link($quiz, [$dataEntity]);
-                                    $this->Quizzes->Data->save($dataEntity);
-                                } else {
-                                    // attribute for last added data entity
-                                    $attType = $this->Quizzes->AttributeTypes->findByName($csv[0][$columnNum])->first();
-                                    if (!$attType) {
-                                        // Create new one
-                                        $attType = $this->Quizzes->AttributeTypes->newEntity();
-                                        $attType->name = $csv[0][$columnNum];
-                                        $this->Quizzes->AttributeTypes->link($quiz, [$attType]);
-                                        $this->Quizzes->AttributeTypes->save($attType);
-                                    }
-
-                                    // Process multiple attributes
-                                    $split = explode(', ', $cell);
-                                    if (array_count_values($split) > 1) {
-                                        // Multiple values allowed, set cardinality bit
-                                        $attType->cardinality = true;
-                                        $this->Quizzes->AttributeTypes->save($attType);
-                                    }
-
-                                    foreach ($split as $a) {
-                                        $att = $this->Quizzes->Data->Attributes->findByValue($cell)->first();
-                                        if (!$att) {
-                                            // Create new attribute
-                                            $att = $this->Quizzes->Data->Attributes->newEntity();
-                                            $att->value = $cell;
-                                            $this->Quizzes->Data->Attributes->link($attType, [$att]);
+                                if (strlen($cell)) {
+                                    if ($columnNum == 0) {
+                                        // New data entity
+                                        $dataEntity = $this->Quizzes->Data->newEntity();
+                                        $dataEntity->name = $cell;
+                                        $this->Quizzes->Data->link($quiz, [$dataEntity]);
+                                        $this->Quizzes->Data->save($dataEntity);
+                                    } else {
+                                        // attribute for last added data entity
+                                        $attType = $this->Quizzes->AttributeTypes->findByName($csv[0][$columnNum])->first();
+                                        if (!$attType) {
+                                            // Create new one
+                                            $attType = $this->Quizzes->AttributeTypes->newEntity();
+                                            $attType->name = $csv[0][$columnNum];
+                                            $this->Quizzes->AttributeTypes->link($quiz, [$attType]);
+                                            $this->Quizzes->AttributeTypes->save($attType);
                                         }
-                                        $this->Quizzes->Data->Attributes->link($dataEntity, [$att]);
-                                        $this->Quizzes->Data->Attributes->save($att);
+
+                                        // Process multiple attributes
+                                        $split = str_getcsv($cell, ', ');
+                                        if (array_count_values($split) > 1) {
+                                            // Multiple values allowed, set cardinality bit
+                                            $attType->cardinality = true;
+                                            $this->Quizzes->AttributeTypes->save($attType);
+                                        }
+
+                                        foreach ($split as $a) {
+                                            $att = $this->Quizzes->Data->Attributes->findByValue($a)->first();
+                                            if (!$att) {
+                                                // Create new attribute
+                                                $att = $this->Quizzes->Data->Attributes->newEntity();
+                                                $att->value = $a;
+                                                debug($attType);
+                                                $this->Quizzes->Data->Attributes->link($attType, [$att]);
+                                            }
+                                            $this->Quizzes->Data->Attributes->link($dataEntity, [$att]);
+                                            $this->Quizzes->Data->Attributes->save($att);
+                                        }
                                     }
                                 }
                             }
