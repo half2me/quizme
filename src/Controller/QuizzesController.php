@@ -79,7 +79,7 @@ class QuizzesController extends AppController
                                         // New data entity
                                         $dataEntity = $this->Quizzes->Data->newEntity();
                                         $dataEntity->name = $cell;
-                                        $this->Quizzes->Data->link($quiz, [$dataEntity]);
+                                        $dataEntity->quiz_id = $quiz->id;
                                         $this->Quizzes->Data->save($dataEntity);
                                     } else {
                                         // attribute for last added data entity
@@ -88,7 +88,7 @@ class QuizzesController extends AppController
                                             // Create new one
                                             $attType = $this->Quizzes->AttributeTypes->newEntity();
                                             $attType->name = $csv[0][$columnNum];
-                                            $this->Quizzes->AttributeTypes->link($quiz, [$attType]);
+                                            $attType->quiz_id = $quiz->id;
                                             $this->Quizzes->AttributeTypes->save($attType);
                                         }
 
@@ -106,8 +106,8 @@ class QuizzesController extends AppController
                                                 // Create new attribute
                                                 $att = $this->Quizzes->Data->Attributes->newEntity();
                                                 $att->value = $a;
-                                                debug($attType);
-                                                $this->Quizzes->Data->Attributes->link($attType, [$att]);
+                                                $att->attribute_type_id = $attType->id;
+                                                $this->Quizzes->Data->Attributes->save($att);
                                             }
                                             $this->Quizzes->Data->Attributes->link($dataEntity, [$att]);
                                             $this->Quizzes->Data->Attributes->save($att);
