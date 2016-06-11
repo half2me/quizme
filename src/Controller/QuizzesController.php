@@ -224,8 +224,8 @@ class QuizzesController extends AppController
 
         // Select similar bad attributes
         $otherAttributes = $this->Quizzes->AttributeTypes->Attributes->find()
-            ->where(['attribute_type_id' => $attribute->attribute_type_id])
-            ->where(['id NOT IN' => $goodAtts])
+            ->where(['Attributes.attribute_type_id' => $attribute->attribute_type_id])
+            ->where(['Attributes.id NOT IN' => $goodAtts])
             ->all()
             ->shuffle()
             ->sample(3)
@@ -266,10 +266,11 @@ class QuizzesController extends AppController
         $dataCollection = (new Collection($attribute->data))->shuffle()->sample(1);
         $data = $dataCollection->first();
 
-        // Select similar bad attributes
+        // Select similar bad data
         $otherData = $this->Quizzes->Data->find()
-            ->where(['quiz_id' => $id])
-            ->where(['id NOT IN' => $goodData])
+            ->where(['Data.quiz_id' => $id])
+            ->where(['Data.id NOT IN' => $goodData])
+            ->matching('Attributes.AttributeTypes')
             ->all()
             ->shuffle()
             ->sample(3)
