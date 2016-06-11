@@ -198,7 +198,7 @@ class QuizzesController extends AppController
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function askRandomQuestion($id = null)
+    public function random($id = null)
     {
         // Quiz type 1 ask about attributes for data
 
@@ -219,7 +219,7 @@ class QuizzesController extends AppController
         $goodAtts = Hash::extract($data->attributes, '{n}.id');
 
         // Select random attribute
-        $attributeCollection = (new Collection($data->attributes))->sample(1);
+        $attributeCollection = (new Collection($data->attributes))->shuffle()->sample(1);
         $attribute = $attributeCollection->first();
 
         // Select similar bad attributes
@@ -237,6 +237,50 @@ class QuizzesController extends AppController
         $this->set('data', $data);
         $this->set('correctAttribute', $attribute);
         $this->set('attributes', $otherAttributes);
+        $this->set('_serialize', ['quiz']);
+    }
+
+    public function random2($id = null)
+    {
+        // Quiz type 2 ask about data for attribute
+
+        // Select random attribute
+        $attribute = $this->Quizzes->Data->Attributes->find()
+            ->select('Attributes.id')
+            ->matching('Data', function($q) use ($id) {
+                return $q->where(['quiz_id' => $id]);
+            })
+            ->all()
+            ->shuffle()
+            ->sample(1)
+            ->first();
+
+        // Grab info
+        $attribute = $this->Quizzes->Data->Attributes->get($attribute->id, [
+            'contain' => ['AttributeTypes', 'Data']
+        ]);
+
+        $goodData = Hash::extract($attribute->data, '{n}.id');
+
+        // Select random good data
+        $dataCollection = (new Collection($attribute->data))->shuffle()->sample(1);
+        $data = $dataCollection->first();
+
+        // Select similar bad attributes
+        $otherData = $this->Quizzes->Data->find()
+            ->where(['quiz_id' => $id])
+            ->where(['id NOT IN' => $goodData])
+            ->all()
+            ->shuffle()
+            ->sample(3)
+            ->append($dataCollection);
+
+        $otherData = new Collection($otherData->toList());
+        $otherData = $otherData->shuffle();
+
+        $this->set('correctData', $data);
+        $this->set('attribute', $attribute);
+        $this->set('data', $otherData);
         $this->set('_serialize', ['quiz']);
     }
 }
