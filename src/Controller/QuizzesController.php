@@ -91,6 +91,11 @@ class QuizzesController extends AppController
 
                                     // Process multiple attributes
                                     $split = explode(', ', $cell);
+                                    if (array_count_values($split) > 1) {
+                                        // Multiple values allowed, set cardinality bit
+                                        $attType->cardinality = true;
+                                        $this->Quizzes->AttributeTypes->save($attType);
+                                    }
 
                                     foreach ($split as $a) {
                                         $att = $this->Quizzes->Data->Attributes->findByValue($cell)->first();
