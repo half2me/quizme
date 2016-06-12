@@ -93,7 +93,7 @@ class QuizzesController extends AppController
                                         }
 
                                         // Process multiple attributes
-                                        $split = str_getcsv($cell, ', ');
+                                        $split = explode(", ", $cell);
                                         if (array_count_values($split) > 1) {
                                             // Multiple values allowed, set cardinality bit
                                             $attType->cardinality = true;
