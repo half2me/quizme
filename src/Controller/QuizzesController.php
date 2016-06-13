@@ -83,7 +83,11 @@ class QuizzesController extends AppController
                                         $this->Quizzes->Data->save($dataEntity);
                                     } else {
                                         // attribute for last added data entity
-                                        $attType = $this->Quizzes->AttributeTypes->findByName($csv[0][$columnNum])->first();
+                                        $attType = $this->Quizzes->AttributeTypes->findByName($csv[0][$columnNum], [
+                                            'where' => [
+                                                'AttributeTypes.quiz_id' => $quiz->id
+                                            ]
+                                        ])->first();
                                         if (!$attType) {
                                             // Create new one
                                             $attType = $this->Quizzes->AttributeTypes->newEntity();
@@ -101,7 +105,11 @@ class QuizzesController extends AppController
                                         }
 
                                         foreach ($split as $a) {
-                                            $att = $this->Quizzes->Data->Attributes->findByValue($a)->first();
+                                            $att = $this->Quizzes->Data->Attributes->findByValue($a, [
+                                                'where' => [
+                                                    'Attributes.attribute_type_id' => $attType->id
+                                                ]
+                                            ])->first();
                                             if (!$att) {
                                                 // Create new attribute
                                                 $att = $this->Quizzes->Data->Attributes->newEntity();
