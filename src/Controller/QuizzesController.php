@@ -82,41 +82,26 @@ class QuizzesController extends AppController
                                         $dataEntity->quiz_id = $quiz->id;
                                         $this->Quizzes->Data->save($dataEntity);
                                     } else {
-                                        // attribute for last added data entity
-                                        $attType = $this->Quizzes->AttributeTypes->findByName($csv[0][$columnNum], [
-                                            'where' => [
-                                                'AttributeTypes.quiz_id' => $quiz->id
-                                            ]
-                                        ])->first();
-                                        if (!$attType) {
-                                            // Create new one
-                                            $attType = $this->Quizzes->AttributeTypes->newEntity();
-                                            $attType->name = $csv[0][$columnNum];
-                                            $attType->quiz_id = $quiz->id;
-                                            $this->Quizzes->AttributeTypes->save($attType);
-                                        }
-
                                         // Process multiple attributes
                                         $split = explode(", ", $cell);
-                                        if (count($split) > 1) {
-                                            // Multiple values allowed, set cardinality bit
-                                            $attType->cardinality = true;
-                                            $this->Quizzes->AttributeTypes->save($attType);
-                                        }
+
+                                        // attribute for last added data entity
+                                        $attType = $this->Quizzes->AttributeTypes->findOrCreate([
+                                            'name' => $csv[0][$columnNum],
+                                            'quiz_id' => $quiz->id,
+                                        ], function ($entity) use ($split) {
+                                            if (count($split) > 1) {
+                                                // Multiple values allowed, set cardinality bit
+                                                $entity->cardinality = true;
+                                            }
+                                        });
 
                                         foreach ($split as $a) {
-                                            $att = $this->Quizzes->Data->Attributes->findByValue($a, [
-                                                'where' => [
-                                                    'Attributes.attribute_type_id' => $attType->id
-                                                ]
-                                            ])->first();
-                                            if (!$att) {
-                                                // Create new attribute
-                                                $att = $this->Quizzes->Data->Attributes->newEntity();
-                                                $att->value = $a;
-                                                $att->attribute_type_id = $attType->id;
-                                                $this->Quizzes->Data->Attributes->save($att);
-                                            }
+                                            $att = $this->Quizzes->Data->Attributes->findOrCreate([
+                                                'value' => $a,
+                                                'attribute_type_id' => $attType->id
+                                            ]);
+
                                             $this->Quizzes->Data->Attributes->link($dataEntity, [$att]);
                                             $this->Quizzes->Data->Attributes->save($att);
                                         }
